@@ -257,6 +257,68 @@
     
     + git push origin :refs/tags/标签名 ，远程删除标签
 
-六，使用GitHub
+六，自定义GitHub
+
+* 忽略特殊文件
+  
+  - 在Git工作区的根目录创建一个特殊的.gitignore文件，然后把要忽略的文件名填进去，即可忽略
+  
+  - 忽略文件的原则：
+    
+    + 操作系统自动生成的文件，比如缩略图等
+    
+    + 编译生成的中间文件、可执行文件等（另一个文件自动生成的文件）没必要放进版本库
+    
+    + 带有敏感信息的配置文件
+  
+  - 被.gitignore忽略的文件无法直接被添加到Git，使用git add -f +文件名 即可强制将忽略的文件直接添加到Git 
+  
+  - git check-ignore -v +添加有问题的文件，可以查看.gitignore哪个规则有问题
+  
+  - 把指定文件名排除到.gitignore规则之外的写法：！+文件名
+  
+  - .gitignore文件本身要放进版本库，并且可以对`.gitignore做版本管理
+
+* 配置别名：git config --global alias. +别名 +命令名（‘命令名’），将命令名修改成别名，--global是全局参数，即命令对本电脑的所有Git仓库下都有用，如果不加则只针对当前仓库
+
+* 配置文件：
+  
+  - 每个仓库的Git配置文件都放在.git/config文件中，用cat +.git/config 命令后，别名在[alias]后面
+  
+  - 当前用户的Git配置的文件放在用户主目录下的隐藏文件.gitconfig,配置别名也可以直接修改这个文件，如果改错了，可以删掉文件重新通过命令配置。
+
+* 搭建Git 服务器
+  
+  - 需要准备一台运行Linux的机器
+  
+  - 创建拥有sudo权限的用户账号
+  
+  - sudo apt-get install git,安装git
+  
+  - sudo adduser git ,创建一个git 用户
+  
+  - 收集所有需要登录的用户的公钥，即id_rsa.pub文件，把所有公钥导入到/home/git/.ssh/authorized_keys文件里，一行一个，创建证书登录
+  
+  - 初始化Git仓库：
+    
+    + 先选定一个目录作为Git仓库，在该目录下输入sudo git init --bare +.git文件名，创建一个裸仓库（没有工作区）
+    
+    + sudo chown -R git :git +.git 文件名，把owner改为git
+  
+  - 禁用shell登录
+    
+    + 出于安全考虑，创建的git用户不允许登录shell，可以通过编辑/etc/passwd文件完成
+    
+    + 找到类似：
+      
+          git:x:1001:1001:,,,:/home/git:/bin/bash
+    
+    + 改为：
+      
+          git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+  
+  - 克隆远程仓库：git clone git @server: 目录地址
 
 * 
+  
+  
